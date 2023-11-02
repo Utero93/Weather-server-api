@@ -1,25 +1,26 @@
 function renderweather(weather) {
+    console.log(weather);
     var weatherResults = document.querySelector("#weather-results");
     // create h2 for city name 
     var cityName = document.createElement("h2");
-    cityName.textContent = weather.name;
+    cityName.textContent = weather.city.name;
     weatherResults.append(cityName);
 
     // create p for current weather, forecast, date, temparture, humidity, wind speed
     var temp = document.createElement("p");
-    temp.textContent = "Temp: " + weather.main.temp + " F";
+    temp.textContent = "Temp: " + weather.list[0].main.temp + " F";
     weatherResults.append(temp);
 
     var humidity = document.createElement("p");
-    humidity.textContent = "Humidity: " + weather.main.humidity + " %";
+    humidity.textContent = "Humidity: " + weather.list[0].main.humidity + " %";
     weatherResults.append(humidity);
 
     var windSpd = document.createElement("p");
-    windSpd.textContent = "Wind Speed: " + weather.wind.speed + " mph";
-    weatherResults.append(humidity);
+    windSpd.textContent = "Wind Speed: " + weather.list[0].wind.speed + " mph" + weather.list[0].wind.deg + " °";
+    weatherResults.append(windSpd);
 
     
-    details.append("")
+    // details.append("")
 
 }
 
@@ -29,7 +30,7 @@ function fetchweather(query) {
 
     fetch(url)
     .then(response => response.json())
-    .then(data => console.log(data));
+    .then(data => renderweather(data));
 
 }
 
