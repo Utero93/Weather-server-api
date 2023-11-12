@@ -6,6 +6,32 @@ const apiKey = 'fcb075651a9215f5f9dcd22cce0ef442';
 const submitBtn = $("#submit-btn");
 const clearBtn = $("#clear-btn");
 
+const userInput = $("#city-input")
+const curCityEl = $("#city-name");
+const curListEl = $("#cur-list");
+const forecastEl = $(".forecast");
+const forecastInfo = $("#forecast-info");
+const citiesStorageEl = $("#ls-cities");
+
+
+let city;
+let cities = [];
+
+// clears local storage which displays the data from the cities array 
+function clearLocal(){
+
+    localStorage.clear();
+    cities = [];
+    loadBtns();
+  }
+  
+  clearBtn.on("click", clearLocal);
+  
+  // Retrieve data from local storage
+  cities = JSON.parse(localStorage.getItem("cities")) || [];
+  
+  // console.log(cities);
+
 
 function renderweather(weather) {
     console.log(weather);
