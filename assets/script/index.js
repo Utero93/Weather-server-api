@@ -1,3 +1,12 @@
+ // GLOBAL SCOPE VARIABLES\\
+//-------------------------\\
+
+const apiKey = 'fcb075651a9215f5f9dcd22cce0ef442';
+
+const submitBtn = $("#submit-btn");
+const clearBtn = $("#clear-btn");
+
+
 function renderweather(weather) {
     console.log(weather);
     var weatherResults = document.querySelector("#weather-results");
@@ -16,9 +25,28 @@ function renderweather(weather) {
     weatherResults.append(humidity);
 
     var windSpd = document.createElement("p");
-    windSpd.textContent = "Wind Speed: " + weather.list[0].wind.speed + " mph" + weather.list[0].wind.deg + " °";
+    windSpd.textContent = "Wind Speed: " + weather.list[0].wind.speed + " mph " + weather.list[0].wind.deg + " °";
     weatherResults.append(windSpd);
 
+    var curDteA = document.createElement("p");
+    curDteA.textContent = "Current Date: " + " Thursday, " + weather.list[0].dt_txt;
+    weatherResults.append(curDteA);
+
+    var curDteB = document.createElement("p");
+    curDteB.textContent = "Current Date: " + " Friday, " + weather.list[8].dt_txt + " Temp: " + weather.list[8].main.temp + " F";
+    weatherResults.append(curDteB, temp);
+
+    var curDteC = document.createElement("p");
+    curDteC.textContent = "Current Date: " + " Saturday, " + weather.list[16].dt_txt + " Temp: " + weather.list[16].main.temp + " F";
+    weatherResults.append(curDteC, temp);
+
+    var curDteD = document.createElement("p");
+    curDteD.textContent = "Current Date: " + " Sunday, " + weather.list[24].dt_txt + " Temp: " + weather.list[24].main.temp + " F";
+    weatherResults.append(curDteD, temp);
+
+    var curDteE = document.createElement("p");
+    curDteE.textContent = "Current Date: " + " Monday, " + weather.list[32].dt_txt + " Temp: " + weather.list[32].main.temp + " F";
+    weatherResults.append(curDteE, temp);
     
     // details.append("")
 
@@ -26,7 +54,7 @@ function renderweather(weather) {
 
 // fetches forecast data for cities
 function fetchweather(query) {
-    var url = "https://api.openweathermap.org/data/2.5/forecast?q=London&units=imperial&lat={lat}&lon={lon}&appid=fcb075651a9215f5f9dcd22cce0ef442";
+    var url = "https://api.openweathermap.org/data/2.5/forecast?q=London&units=imperial&lat={lat}&lon={lon}&appid=" + apiKey + "const fcb075651a9215f5f9dcd22cce0ef442";
 
     fetch(url)
     .then(response => response.json())
