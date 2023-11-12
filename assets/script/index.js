@@ -32,7 +32,7 @@ function clearLocal(){
   
   // console.log(cities);
 
-  function loadBtns (){
+function loadBtns (){
 
     // Check if there is data in local storage
     if (cities && cities.length > 0) {
@@ -68,8 +68,8 @@ function clearLocal(){
     // hide 5-day forecast grid on load
     forecastInfo.hide();
     
-    // Helper function to capitalize the first letter of a string
-    function capitalizeFirstLetter(string) {
+// Helper function to capitalize the first letter of a string
+function capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
@@ -141,60 +141,140 @@ function handleSubmit(event){
   
   submitBtn.on("click", handleSubmit);
 
-
-function renderweather(weather) {
-    console.log(weather);
-    var weatherResults = document.querySelector("#weather-results");
-    // create h2 for city name 
-    var cityName = document.createElement("h2");
-    cityName.textContent = weather.city.name;
-    weatherResults.append(cityName);
-
-    // create p for current weather, forecast, date, temparture, humidity, wind speed
-    var temp = document.createElement("p");
-    temp.textContent = "Temp: " + weather.list[0].main.temp + " F";
-    weatherResults.append(temp);
-
-    var humidity = document.createElement("p");
-    humidity.textContent = "Humidity: " + weather.list[0].main.humidity + " %";
-    weatherResults.append(humidity);
-
-    var windSpd = document.createElement("p");
-    windSpd.textContent = "Wind Speed: " + weather.list[0].wind.speed + " mph " + weather.list[0].wind.deg + " °";
-    weatherResults.append(windSpd);
-
-    var curDteA = document.createElement("p");
-    curDteA.textContent = "Current Date: " + " Thursday, " + weather.list[0].dt_txt;
-    weatherResults.append(curDteA);
-
-    var curDteB = document.createElement("p");
-    curDteB.textContent = "Current Date: " + " Friday, " + weather.list[8].dt_txt + " Temp: " + weather.list[8].main.temp + " F";
-    weatherResults.append(curDteB, temp);
-
-    var curDteC = document.createElement("p");
-    curDteC.textContent = "Current Date: " + " Saturday, " + weather.list[16].dt_txt + " Temp: " + weather.list[16].main.temp + " F";
-    weatherResults.append(curDteC, temp);
-
-    var curDteD = document.createElement("p");
-    curDteD.textContent = "Current Date: " + " Sunday, " + weather.list[24].dt_txt + " Temp: " + weather.list[24].main.temp + " F";
-    weatherResults.append(curDteD, temp);
-
-    var curDteE = document.createElement("p");
-    curDteE.textContent = "Current Date: " + " Monday, " + weather.list[32].dt_txt + " Temp: " + weather.list[32].main.temp + " F";
-    weatherResults.append(curDteE, temp);
+function getGEO(city){
+    // city = 'philadelphia';
+    const geoURL = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
+  
     
-    // details.append("")
+    fetch(geoURL)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        // console.log(data);
+  
+        const cityName = data[0].name;
+        const state = data[0].state;
+        const lat = data[0].lat;
+        const lon = data[0].lon;
+  
+        // console.log(lat);
+        // console.log(lon);
+  
+        //create h2 element
+        const curCity = $('<h2>');
+  
+        // attr/text
+        curCity.addClass("heading current-city");
+  
+        curCity.text(cityName + ", " + state);
+  
+        // append
+  
+        curCityEl.append(curCity);
+  
+        getWeather(lat, lon);
+        getForecast(lat, lon);
+    })
+  }
 
-}
+function getForecast(lat, lon){
+    const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
+  
+    fetch(forecastURL)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        // console.log(data);
+  
+        const dates = [];
+        const temps = [];
+        const winds = [];
+        const humidities = [];
+        const icons = [];
+        
+  
+        // Loop through the data and extract the required values
+        for (let i = 6; i <= 38; i += 8) {
+          
+          dates.push(data.list[i].dt_txt.substring(0, 10));
+          temps.push(data.list[i].main.temp);
+          winds.push(data.list[i].wind.speed);
+          humidities.push(data.list[i].main.humidity);
+          icons.push (data.list[i].weather[0].icon);
+        }
+  
+        // Initialize an array of day elements
+        const days = [
+          $('#day-1'),
+          $('#day-2'),
+          $('#day-3'),
+          $('#day-4'),
+          $('#day-5')
+        ];
+  
+        // Use a loop to display the values for each day
+        for (let i = 0; i < days.length; i++) {
+  
+          const iconCode = icons[i];
+  
+          const iconUrl = `https://openweathermap.org/img/wn/${iconCode}.png`; 
+  
+          // Create an <img> element for the weather icon and set its src attribute
+          const iconImg = $('<img>').attr('src', iconUrl);
+  
+          // Create a heading tag for the dates
+          const dateEl = $('<h3>').text(dates[i]);
+  
+          // Append content to page
+          days[i].append(dateEl);
+        
+          days[i].append("Temp: " + temps[i] + " F" + "\r\n" + "WS: " + winds[i] + " mph" + "\r\n" + "Humidity: " + humidities[i] + "%");
+  
+          days[i].append(iconImg);
+        
+        }
+    })
+  }
+
 
 // fetches forecast data for cities
-function fetchweather(query) {
-    var url = "https://api.openweathermap.org/data/2.5/forecast?q=London&units=imperial&lat={lat}&lon={lon}&appid=" + apiKey + "const fcb075651a9215f5f9dcd22cce0ef442";
+function getWeather(lat, lon){
+    const weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
+  
+    fetch(weatherURL)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        // console.log(data);
+  
+        const temp = data.main.temp;
+        const wind = data.wind.speed;
+        const humid = data.main.humidity;
+        const icon = data.weather[0].icon;
+  
+        // create elements
+        const curTemp = $('<li>');
+        const curWind = $('<li>');
+        const curHumid = $('<li>');
+        const curIcon = $('<img>');
+  
+        // attr/text
+        curIcon.attr('src', `https://openweathermap.org/img/wn/${icon}.png`);
+        curIcon.attr('id', 'cur-icon');
+        curTemp.text('Temp: ' + temp + "F");
+        curWind.text('Windspeed: ' + wind + "mph");
+        curHumid.text('Humidity: ' + humid + "%");
+  
+        // append
+        curListEl.append(curIcon);
+        curListEl.append(curTemp);
+        curListEl.append(curWind);
+        curListEl.append(curHumid);
+    })
+  }
 
-    fetch(url)
-    .then(response => response.json())
-    .then(data => renderweather(data));
 
-}
-
-fetchweather();
+  
