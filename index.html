@@ -1,19 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="./assets/stylesheet/styles.css">
+  <title>Weather Dashboard</title>
 
-    <script src="./assets/script/index.js"></script>
-    <script src="./assets/script/script.js"></script>
-    <title>Weather API Demo</title>
+  <link rel="stylesheet" href="./assets/styles/reset.css">
+
+  <link rel="stylesheet" href="./assets/styles/styles.css">
+
 </head>
 <body>
-    <h1>Weather API Demo</h1>
-    <div id="weather-results"></div>
-    <script src="./assets/script/index.js"></script>
 
+  <!-- HEADER --> 
+
+  <header>
+    <h1>Weather Dashboard</h1>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- LEFT SECTION W/SEARCH FORM -->
+    <section id="left">
+
+      <!-- SUBMIT FORM -->
+
+      <form>
+        <div id="form-box">
+
+          <h2>
+            Search for a City:
+          </h2>
+
+          <input placeholder="Enter City" id="city-input">
+  
+          <button id="submit-btn">
+            Search
+          </button>
+
+          <button id="clear-btn">
+            Clear
+          </button>
+
+        </div>
+      </form>
+
+    <!-- BTNS LIST DYNAMICALLY GENERATED IN SCRIPT.JS OF CITIES SAVED IN LOCAL STORAGE -->
+
+      <ul id="ls-cities"></ul>
+
+    </section>
+    
+
+    <!-- RIGHT SECTION W/WEATHER INFO -->
+    <section id="right">
+  
+      <!-- CONTAINER FOR CURRENT CITY INFO -->
+      <div id="city-info">
+
+        <div id="city-name"></div>
+
+        <ul id="cur-list">
+        </ul>
+
+      </div>
+
+      <!-- FIVE DAY FORCAST GRID -->
+      <div id="forecast-info" class="f-info">
+
+        <h2 class="heading">5-Day Forecast:</h2>
+
+        <div id="day-box">
+
+          <div class="forecast" id="day-1">
+          </div>
+
+          <div class="forecast"
+          id="day-2">
+          </div>
+
+          <div class="forecast" id="day-3">
+          </div>
+
+          <div class="forecast" id="day-4">
+          </div>
+
+          <div class="forecast" id="day-5">
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+  <script src=" https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+
+  <script src="./assets/scripts/script.js"></script>
 </body>
 </html>
