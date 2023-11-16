@@ -1,6 +1,7 @@
  // GLOBAL SCOPE VARIABLES\\
 //-------------------------\\
 
+// api key for accessing the weather api and the data needed to locate the city, name, forecast, etc..
 const apiKey = 'fcb075651a9215f5f9dcd22cce0ef442';
 
 const submitBtn = $("#submit-btn");
